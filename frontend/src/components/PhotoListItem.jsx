@@ -1,9 +1,10 @@
-import React from "react";
-
-import "../styles/PhotoListItem.scss";
+import React from 'react';
+import PhotoFavButton from './PhotoFavButton';
+import '../styles/PhotoListItem.scss';
 
 const PhotoListItem = (props) => {
-  const { imageSource, username, profile, location } = props;
+  const { imageSource, username, profile, location, isLiked, toggleLike } = props;
+
   return (
     <div className="photo-list__item">
       <img src={imageSource} alt={`Photo by ${username}`} className="photo-list__image" />
@@ -15,10 +16,10 @@ const PhotoListItem = (props) => {
             {location.city}, {location.country}
           </div>
         </div>
+        <PhotoFavButton selected={isLiked} onClick={toggleLike} />
       </div>
     </div>
   );
 };
-
 
 export default PhotoListItem;
