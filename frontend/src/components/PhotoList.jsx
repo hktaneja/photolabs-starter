@@ -1,5 +1,6 @@
-import React from "react";
 
+import React, { useState } from "react";
+import PhotoListItem from "./PhotoListItem";
 import "../styles/PhotoList.scss";
 
 const sampleDataForPhotoList = [
@@ -19,6 +20,7 @@ const sampleDataForPhotoList = [
       name: "Joe Example",
       profile: `${process.env.PUBLIC_URL}/profile-1.jpg`,
     },
+    
   },
   {
     id: "2",
@@ -57,11 +59,29 @@ const sampleDataForPhotoList = [
 ];
 
 const PhotoList = () => {
+  const [likedPhotos, setLikedPhotos] = useState({});
+
+  const toggleLike = (photoId) => {
+    setLikedPhotos((prevLikedPhotos) => {
+      return { ...prevLikedPhotos, [photoId]: !prevLikedPhotos[photoId] };
+    });
+  };
+
   return (
     <ul className="photo-list">
-      {/* Insert React */}
+      {sampleDataForPhotoList.map((photo) => (
+        <li key={photo.id}>
+          <PhotoListItem
+            imageSource={photo.urls.regular}
+            username={photo.user.username}
+            profile={photo.user.profile}
+            location={photo.location}
+            isLiked={likedPhotos[photo.id] || false}
+            toggleLike={() => toggleLike(photo.id)}
+          />
+        </li>
+      ))}
     </ul>
   );
 };
-
 export default PhotoList;
