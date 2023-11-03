@@ -8,6 +8,21 @@ const PhotoList = () => {
   const [likedPhotos, setLikedPhotos] = useState({});
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedPhoto, setSelectedPhoto] = useState(null);
+  const [similarPhotos, setSimilarPhotos] = useState([]); // State variable for similar photos
+
+  // Function to find similar photos based on the similar_photos property
+  const findSimilarPhotos = (photo) => {
+    if (photo.similar_photos && Object.keys(photo.similar_photos).length > 0) {
+      // Extract similar photo IDs from the similar_photos object and convert them into an array
+      const similarPhotoIds = Object.values(photo.similar_photos).map((similarPhoto) => similarPhoto.id);
+      // Filter photos based on whether their IDs are in similarPhotoIds
+      const similarPhotos = photos.filter((p) => similarPhotoIds.includes(p.id) && p.id !== photo.id);
+      return similarPhotos;
+    } else {
+      console.log("No similar photos found.");
+      return [];
+    }
+  };
 
   const toggleLike = (photoId) => {
     setLikedPhotos((prevLikedPhotos) => {
@@ -17,6 +32,11 @@ const PhotoList = () => {
 
   const openModal = (photo) => {
     setSelectedPhoto(photo);
+
+    // Find similar photos for the selected photo
+    const similarPhotosForSelected = findSimilarPhotos(photo);
+    setSimilarPhotos(similarPhotosForSelected);
+
     setIsModalOpen(true);
   };
 
@@ -36,12 +56,12 @@ const PhotoList = () => {
               location={photo.location}
               isLiked={likedPhotos[photo.id] || false}
               toggleLike={() => toggleLike(photo.id)}
-              onPhotoClick={() => openModal(photo)} // Pass the openModal function with the photo as an argument
+              onPhotoClick={() => openModal(photo)}
             />
           </li>
         ))}
       </ul>
-      <PhotoDetailsModal isOpen={isModalOpen} onClose={closeModal} selectedPhoto={selectedPhoto} />
+      <PhotoDetailsModal isOpen={isModalOpen} onClose={closeModal} selectedPhoto={selectedPhoto} similarPhotos={similarPhotos} />
     </div>
   );
 };

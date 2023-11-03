@@ -6,7 +6,6 @@
     const { imageSource, username, profile, location, isLiked, toggleLike, onPhotoClick } = props;
     const handlePhotoClick = () => {
       if (onPhotoClick) {
-        console.log("i am clicked");
         onPhotoClick();
       }
     };
