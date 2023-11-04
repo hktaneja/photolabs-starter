@@ -4,8 +4,7 @@ import PhotoDetailsModal from "../routes/PhotoDetailsModal";
 import "../styles/PhotoList.scss";
 import photos from "../mocks/photos.js";
 
-const PhotoList = () => {
-  const [likedPhotos, setLikedPhotos] = useState({});
+const PhotoList = ({ onLikePhoto, likedPhotos }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedPhoto, setSelectedPhoto] = useState(null);
   const [similarPhotos, setSimilarPhotos] = useState([]); // State variable for similar photos
@@ -25,9 +24,7 @@ const PhotoList = () => {
   };
 
   const toggleLike = (photoId) => {
-    setLikedPhotos((prevLikedPhotos) => {
-      return { ...prevLikedPhotos, [photoId]: !prevLikedPhotos[photoId] };
-    });
+    onLikePhoto(photoId); // Call the callback function to indicate a like
   };
 
   const openModal = (photo) => {
@@ -61,7 +58,7 @@ const PhotoList = () => {
           </li>
         ))}
       </ul>
-      <PhotoDetailsModal isOpen={isModalOpen} onClose={closeModal} selectedPhoto={selectedPhoto} similarPhotos={similarPhotos} />
+      <PhotoDetailsModal isOpen={isModalOpen} onClose={closeModal} selectedPhoto={selectedPhoto} similarPhotos={similarPhotos} onLikePhoto={onLikePhoto}  />
     </div>
   );
 };

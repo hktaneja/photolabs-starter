@@ -1,14 +1,11 @@
 import React from 'react';
-import PhotoList from './components/PhotoList';
-import TopNavigationBar from './components/TopNavigationBar';
+import HomeRoute from 'routes/HomeRoute';
 import './App.scss';
-import topics from './mocks/topics'; // Import the topics data
-import PhotoDetailsModal from './routes/PhotoDetailsModal';
+
 const App = () => { 
   return (
-    <div className="App">
-      <TopNavigationBar topics={topics} /> {/* Pass topics data to TopNavigationBar */}
-      <PhotoList/>      
+    <div className="App">       
+      <HomeRoute/>    
     </div>
   );
 };

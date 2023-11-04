@@ -1,28 +1,35 @@
 import React, { useState } from 'react';
-import TopNavigationBar from './components/TopNavigationBar';
-import PhotoList from './components/PhotoList';
+import TopNavigationBar from 'components/TopNavigationBar';
+import PhotoList from 'components/PhotoList';
 import '../styles/HomeRoute.scss';
+import topics from '../mocks/topics'; // Import the topics data
 
 const HomeRoute = () => {
-  // Local state to store liked photos
   const [likedPhotos, setLikedPhotos] = useState({});
+  const [isFavPhotoExist, setIsFavPhotoExist] = useState(false);
 
-  // Function to toggle liking a photo
-  const toggleLike = (photoId) => {
-    // Check if the photo is already liked and toggle its state
-    setLikedPhotos((prevLikedPhotos) => ({
-      ...prevLikedPhotos,
-      [photoId]: !prevLikedPhotos[photoId],
-    }));
+  const handleLikePhoto = (photoId) => {
+    setLikedPhotos((prevLikedPhotos) => {
+      const updatedLikedPhotos = { ...prevLikedPhotos };
+      updatedLikedPhotos[photoId] = !prevLikedPhotos[photoId];
+
+      const isAnyPhotoLiked = Object.values(updatedLikedPhotos).some((isLiked) => isLiked);
+      setIsFavPhotoExist(isAnyPhotoLiked);
+
+      return updatedLikedPhotos;
+    });
   };
 
   return (
     <div className="home-route">
-      <TopNavigationBar likedPhotos={likedPhotos} />
-      <PhotoList likedPhotos={likedPhotos} toggleLike={toggleLike} />
-      {/* Insert React */}
+      <TopNavigationBar topics={topics} isFavPhotoExist={isFavPhotoExist} />
+      <PhotoList likedPhotos={likedPhotos} onLikePhoto={handleLikePhoto} />
     </div>
   );
 };
 
 export default HomeRoute;
+
+
+
+
