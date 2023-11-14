@@ -1,66 +1,87 @@
-import React, { useState } from "react";
-import PhotoListItem from "./PhotoListItem";
-import PhotoDetailsModal from "../routes/PhotoDetailsModal";
-import "../styles/PhotoList.scss";
-import photos from "../mocks/photos.js";
+import React from 'react';
+import PhotoListItem from './PhotoListItem';
+import '../styles/PhotoList.scss';
 
-const PhotoList = ({ onLikePhoto, likedPhotos }) => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedPhoto, setSelectedPhoto] = useState(null);
-  const [similarPhotos, setSimilarPhotos] = useState([]); // State variable for similar photos
-
-  // Function to find similar photos based on the similar_photos property
-  const findSimilarPhotos = (photo) => {
-    if (photo.similar_photos && Object.keys(photo.similar_photos).length > 0) {
-      // Extract similar photo IDs from the similar_photos object and convert them into an array
-      const similarPhotoIds = Object.values(photo.similar_photos).map((similarPhoto) => similarPhoto.id);
-      // Filter photos based on whether their IDs are in similarPhotoIds
-      const similarPhotos = photos.filter((p) => similarPhotoIds.includes(p.id) && p.id !== photo.id);
-      return similarPhotos;
-    } else {
-      console.log("No similar photos found.");
-      return [];
-    }
-  };
-
-  const toggleLike = (photoId) => {
-    onLikePhoto(photoId); // Call the callback function to indicate a like
-  };
-
-  const openModal = (photo) => {
-    setSelectedPhoto(photo);
-
-    // Find similar photos for the selected photo
-    const similarPhotosForSelected = findSimilarPhotos(photo);
-    setSimilarPhotos(similarPhotosForSelected);
-
-    setIsModalOpen(true);
-  };
-
-  const closeModal = () => {
-    setIsModalOpen(false);
-  };
+const PhotoList = ({
+  photos,
+  favourites,
+  toggleFavourite,
+  onPhotoClick,
+  getSimilarPhotos
+}) => {
 
   return (
-    <div>
-      <ul className="photo-list">
-        {photos.map((photo) => (
-          <li key={photo.id}>
-            <PhotoListItem
-              imageSource={photo.urls.regular}
-              username={photo.user.username}
-              profile={photo.user.profile}
-              location={photo.location}
-              isLiked={likedPhotos[photo.id] || false}
-              toggleLike={() => toggleLike(photo.id)}
-              onPhotoClick={() => openModal(photo)}
-            />
-          </li>
-        ))}
-      </ul>
-      <PhotoDetailsModal isOpen={isModalOpen} onClose={closeModal} selectedPhoto={selectedPhoto} similarPhotos={similarPhotos} onLikePhoto={onLikePhoto}  />
-    </div>
+    <ul className="photo-list">
+      {photos.map((photo) => (
+        <PhotoListItem
+          key={photo.id}
+          id={photo.id}
+          favourites={favourites}
+          selected={favourites.includes(photo.id)}
+          toggleFavourite={() => toggleFavourite(photo.id)}
+          {...photo}
+          onPhotoClick={onPhotoClick}
+          getSimilarPhotos={getSimilarPhotos}
+        />
+      ))}
+    </ul>
   );
+};
+
+PhotoList.defaultProps = {
+  photos: [
+    {
+      "id": "1",
+      "location": {
+        "city": "Montreal",
+        "country": "Canada"
+      },
+      "urls": {
+        "full": `${process.env.PUBLIC_URL}/Image-1-Full.jpeg`,
+        "regular": `${process.env.PUBLIC_URL}/Image-1-Regular.jpeg`
+      },
+      "user": {
+        "id": "1",
+        "username": "exampleuser",
+        "name": "Joe Example",
+        "profile": `${process.env.PUBLIC_URL}/profile-1.jpg`
+      }
+    },
+    {
+      "id": "2",
+      "location": {
+        "city": "Toronto",
+        "country": "Canada"
+      },
+      "urls": {
+        "full": `${process.env.PUBLIC_URL}/Image-2-Full.jpeg`,
+        "regular": `${process.env.PUBLIC_URL}/Image-2-Regular.jpeg`
+      },
+      "user": {
+        "id": "2",
+        "username": "exampleuser",
+        "name": "Joe Example",
+        "profile": `${process.env.PUBLIC_URL}/profile-1.jpg`
+      }
+    },
+    {
+      "id": "3",
+      "location": {
+        "city": "Ottawa",
+        "country": "Canada"
+      },
+      "urls": {
+        "full": `${process.env.PUBLIC_URL}/Image-3-Full.jpeg`,
+        "regular": `${process.env.PUBLIC_URL}/Image-3-Regular.jpeg`
+      },
+      "user": {
+        "id": "3",
+        "username": "exampleuser",
+        "name": "Joe Example",
+        "profile": `${process.env.PUBLIC_URL}/profile-1.jpg`
+      }
+    }
+  ]
 };
 
 export default PhotoList;
