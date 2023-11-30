@@ -1,9 +1,8 @@
-.topic-list__item {
+.topic-list--item {
   line-height: 24px;
   margin-left: 24px;
 }
-
-.topic-list__item span {
+.topic-list--item .topic-list--item-link {
   font-size: 18px;
   text-decoration: none;
   font-weight: 500;
@@ -12,5 +11,17 @@
   &:hover {
     text-decoration: overline;
     color: #111;
+    cursor: pointer;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4);
   }
+}
+
+
+.topic-list--item-link--active {
+  font-size: 18px;
+  font-weight: 500;
+  text-decoration: overline;
+  color: #111;
+  cursor: pointer;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4);
 }

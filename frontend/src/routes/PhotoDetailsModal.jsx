@@ -44,6 +44,7 @@ export const PhotoDetailsModal = (props) => {
       </div>
       <div className='photo-details-modal__content'>
         <div className="photo-details-modal__image-wrap">
+          <>
           {props.selectedPhoto && (
             <PhotoFavButton
               onClick={() => props.toggleFavourite(props.selectedPhoto.id)}
@@ -57,6 +58,7 @@ export const PhotoDetailsModal = (props) => {
               src={props.selectedPhoto.urls.regular}
             />
           )}
+          </>
         </div>
 
         <div className='photo-details-modal__photographer-details'>
@@ -89,4 +91,4 @@ export const PhotoDetailsModal = (props) => {
 };
 
 
-export default PhotoDetailsModal;;;;
+export default PhotoDetailsModal;

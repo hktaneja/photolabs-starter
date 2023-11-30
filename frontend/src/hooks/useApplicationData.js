@@ -1,73 +1,5 @@
 import { useReducer, useEffect } from 'react';
-
-const initialState = {
-  favourites: [],
-  modalOpen: false,
-  selectedPhoto: null,
-  photos: [],
-  topics: [],
-};
-
-const reducer = (state, action) => {
-
-  switch (action.type) {
-    case 'TOGGLE_FAVOURITE':
-      if (state.favourites.includes(action.id)) {
-        const newState = {
-          ...state,
-          favourites: state.favourites.filter((fav) => fav !== action.id)
-        };
-        return newState;
-
-      } else {
-        const newState = {
-          ...state,
-          favourites: [...state.favourites, action.id]
-        };
-        return newState;
-      }
-
-    case 'SELECT_PHOTO':
-      const selectedPhoto = state.photos.find((photo) => photo.id === action.id);
-      return {
-        ...state,
-        selectedPhoto,
-        modalOpen: true
-      };
-
-    case 'CLOSE_MODAL':
-
-      return {
-        ...state,
-        modalOpen: false
-      };
-
-    case 'SET_PHOTOS':
-
-      return {
-        ...state,
-        photos: action.payload,
-      };
-
-    case 'SET_TOPICS':
-
-      return {
-        ...state,
-        topics: action.payload,
-      };
-
-    case 'SET_PHOTOS_BY_TOPIC':
-
-      return {
-        ...state,
-        photos: action.payload,
-      };
-
-
-    default:
-      throw new Error(`Unsupported action type: ${action.type}`);
-  }
-};
+import { reducer, initialState } from "../reducer/reducer";
 
 const useApplicationData = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
@@ -86,17 +18,17 @@ const useApplicationData = () => {
 
   const getSimilarPhotos = () => {
     if (state.selectedPhoto) {
-      const similarPhotos = state.photos.filter(
+      const modalPhoto = state.photos.filter(
         (photo) =>
-          photo.topic === state.selectedPhoto.topic && photo.id !== state.selectedPhoto.id
+          photo.id === state.selectedPhoto.id
       );
-      return similarPhotos;
+      return modalPhoto[0].similar_photos;
     }
     return [];
   };
 
   const fetchPhotosByTopic = (topicId) => {
-    fetch(`http://localhost:8001/api/topics/photos/${topicId}`)
+    fetch(`/api/topics/photos/${topicId}`)
       .then((response) => response.json())
       .then((data) => {
         dispatch({ type: 'SET_PHOTOS_BY_TOPIC', payload: data });
@@ -107,7 +39,7 @@ const useApplicationData = () => {
   };
 
   useEffect(() => {
-    fetch('http://localhost:8001/api/photos')
+    fetch('/api/photos')
       .then(response => response.json())
       .then(data => {
         dispatch({ type: 'SET_PHOTOS', payload: data });
@@ -116,7 +48,7 @@ const useApplicationData = () => {
         console.error('Error fetching photos:', error);
       });
 
-    fetch('http://localhost:8001/api/topics')
+    fetch('/api/topics')
       .then(response => response.json())
       .then(data => {
         dispatch({ type: 'SET_TOPICS', payload: data });

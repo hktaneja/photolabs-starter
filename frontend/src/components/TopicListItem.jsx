@@ -2,19 +2,18 @@ import React from 'react';
 import '../styles/TopicListItem.scss';
 
 const TopicListItem = (props) => {
+  console.log(props.title);
 
   return (
+    <div className="topic-list--item">
     <li onClick={() => props.fetchPhotosByTopic(props.id)}
-      className="topic-list__item">
+     
+        className={props.id === props.title ? "topic-list--item-link--active" : "topic-list--item-link" }>
       {props.title}
     </li>
+    </div>
   );
 };
 
 
-TopicListItem.defaultProps = {
-  "id": "1",
-  "slug": "topic-1",
-  "label": "Nature"
-};
 export default TopicListItem;
