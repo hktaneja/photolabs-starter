@@ -3,16 +3,18 @@ import PhotoFavButton from '../components/PhotoFavButton';
 import PhotoList from '../components/PhotoList';
 import '../styles/PhotoDetailsModal.scss';
 
-
+// PhotoDetailsModal component
 export const PhotoDetailsModal = (props) => {
 
+  // Render method
   return (
-
     <div className='photo-details-modal'>
+      {/* Header */}
       <div className="photo-details-modal__header">
         <button className='photo-details-modal__close-button'
           onClick={props.onClose}
         >
+          {/* Close button icon */}
           <svg
             width="24"
             height="24"
@@ -42,30 +44,34 @@ export const PhotoDetailsModal = (props) => {
           </svg>
         </button>
       </div>
+      {/* Content */}
       <div className='photo-details-modal__content'>
+        {/* Image wrap */}
         <div className="photo-details-modal__image-wrap">
           <>
-          {props.selectedPhoto && (
-            <PhotoFavButton
-              onClick={() => props.toggleFavourite(props.selectedPhoto.id)}
-              selected={props.favourites.includes(props.selectedPhoto.id)}
-              className="photo-details-modal__fav-button"
-            />
-          )}
-
-          {props.selectedPhoto && (
-            <img className='photo-details-modal__image'
-              src={props.selectedPhoto.urls.regular}
-            />
-          )}
+            {/* Favorite button */}
+            {props.selectedPhoto && (
+              <PhotoFavButton
+                onClick={() => props.toggleFavourite(props.selectedPhoto.id)}
+                selected={props.favourites.includes(props.selectedPhoto.id)}
+                className="photo-details-modal__fav-button"
+              />
+            )}
+            {/* Selected photo */}
+            {props.selectedPhoto && (
+              <img className='photo-details-modal__image'
+                src={props.selectedPhoto.urls.regular}
+              />
+            )}
           </>
         </div>
 
+        {/* Photographer details */}
         <div className='photo-details-modal__photographer-details'>
           <img
             src={props.selectedPhoto.user.profile} className='photo-details-modal__user-profile'
           />
-
+          {/* Photographer info */}
           <section className='photo-details-modal__photographer-info'>
             <p className="photo-details-modal__user-info">
               {props.selectedPhoto.user.username}
@@ -75,10 +81,12 @@ export const PhotoDetailsModal = (props) => {
             </p>
           </section>
         </div>
+        {/* Similar photos */}
         <section className="photo-details-modal__similar-photos">
           <p className="photo-details-modal__similar-photos-header">
             Similar Photos
           </p>
+          {/* PhotoList component */}
           <PhotoList
             photos={props.getSimilarPhotos()}
             favourites={props.favourites}
@@ -89,6 +97,5 @@ export const PhotoDetailsModal = (props) => {
     </div>
   );
 };
-
 
 export default PhotoDetailsModal;

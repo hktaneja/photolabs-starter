@@ -2,6 +2,7 @@ import React from 'react';
 import '../styles/PhotoListItem.scss';
 import PhotoFavButton from './PhotoFavButton';
 
+// PhotoListItem component
 const PhotoListItem = ({
   id,
   location,
@@ -16,37 +17,43 @@ const PhotoListItem = ({
   onPhotoClick
 }) => { 
 
+  // Render method
   return (    
-   
-      <div className="photo-list__item">
+    <div className="photo-list__item">
+      {/* PhotoFavButton component */}
+      <PhotoFavButton
+        id={id}
+        selected={selected}
+        onClick={toggleFavourite}
+        getSimilarPhotos={getSimilarPhotos}
+      />
       
-          <PhotoFavButton
-            id={id}
-            selected={selected}
-            onClick={toggleFavourite}
-            getSimilarPhotos={getSimilarPhotos}
-          />
-        
-        <img className='photo-list__image'
-          onClick={() => onPhotoClick(id)}
-          src={urls.full || imageSource}
-          alt={`Photo ${id}`}
-        />
-       <div className="photo-list--details--parent">  
+      {/* Photo image */}
+      <img className='photo-list__image'
+        onClick={() => onPhotoClick(id)}
+        src={urls.full || imageSource}
+        alt={`Photo ${id}`}
+      />
 
-          <img className='photo-list__user-profile'
-            src={user.profile}
-            alt={`Photo ${id}`}
-          />  
-          <div className="photo-list--user-details">        
-            <p className="photo-list__user-info"> {user.name}
-            </p>             
-            <p className="photo-list__user-location ">
-              {location.city}, {location.country}
-            </p> 
-            </div>
+      {/* User details */}
+      <div className="photo-list--details--parent">  
+        {/* User profile image */}
+        <img className='photo-list__user-profile'
+          src={user.profile}
+          alt={`Photo ${id}`}
+        />  
+        {/* User information */}
+        <div className="photo-list--user-details">        
+          <p className="photo-list__user-info"> {user.name}
+          </p>             
+          <p className="photo-list__user-location ">
+            {location.city}, {location.country}
+          </p> 
         </div>
-      </div>    
+      </div>
+    </div>    
   );
 };
+
+// Export PhotoListItem component
 export default PhotoListItem;

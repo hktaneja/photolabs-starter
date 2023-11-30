@@ -16,7 +16,6 @@ export const reducer = (state, action) => {
           favourites: state.favourites.filter((fav) => fav !== action.id)
         };
         return newState;
-
       } else {
         const newState = {
           ...state,
@@ -34,33 +33,28 @@ export const reducer = (state, action) => {
       };
 
     case 'CLOSE_MODAL':
-
       return {
         ...state,
         modalOpen: false
       };
 
     case 'SET_PHOTOS':
-
       return {
         ...state,
         photos: action.payload,
       };
 
     case 'SET_TOPICS':
-
       return {
         ...state,
         topics: action.payload,
       };
 
     case 'SET_PHOTOS_BY_TOPIC':
-
       return {
         ...state,
         photos: action.payload,
       };
-
 
     default:
       throw new Error(`Unsupported action type: ${action.type}`);
